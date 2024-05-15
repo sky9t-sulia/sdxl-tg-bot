@@ -5,7 +5,7 @@ Works on ESP32. Tested on ESP32C3
 
 ## Usage
 The prompt is:
-- ``/sdxl <prompt>;<negative prompt>;<style>;<orientation>``
+- ``/sdxl <prompt>;<negative prompt?>;<style?>;<orientation?>`` (negative prompt, style, and orientation are optional)
 - ``/help`` to get help
 
 ## Example
@@ -14,7 +14,7 @@ The prompt is:
 
 ## Extra
 Styles:\
-``'enhance', 'anime', 'photographic', 'digital-art', 'comic-book','fantasy-art', 'analog-film', 'neonpunk', 'isometric', 'lowpoly','origami', 'line-art', 'craft-clay', 'cinematic', '3d-model', 'pixel-art', 'texture', 'futuristic', 'realism', 'watercolor', 'photorealistic'``
+``'enhance', 'anime', 'photographic', 'digital-art', 'comic-book','fantasy-art', 'analog-film', 'neonpunk', 'isometric', 'lowpoly','origami', 'line-art', 'craft-clay', 'cinematic', '3d-model', 'pixel-art', 'texture', 'futuristic', 'realism', 'watercolor', 'photorealistic'`` (default ``photorealistic``)
 
 Orientation:\
-``landscape, portrait``
+``landscape, portrait`` (default ``portrait``)
