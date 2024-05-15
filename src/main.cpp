@@ -24,13 +24,13 @@ void checkQueue()
 {
     if (queue.isEmpty())
     {
-        Serial.println("Nothing in queue...");
+        return;
     }
 
     for (int i = 0; i < queue.size(); i++)
     {
         JsonDocument response;
-        RequestQueueItem item = queue.getItem(i);
+        RequestQueueItem &item = queue.getItem(i);
 
         if (!item.statusUrl.isEmpty())
         {
@@ -39,7 +39,7 @@ void checkQueue()
                 if (response["status"] == "COMPLETED")
                 {
                     queue.remove(i);
-                    String imageUrl = response["result"]["image_url"][0];
+                    String imageUrl = response["result"]["output"][0];
                     fb::File file("sdxl.jpg", fb::File::Type::photo, imageUrl);
                     file.chatID = item.chatId;
                     bot.sendFile(file);
@@ -50,6 +50,10 @@ void checkQueue()
                     queue.remove(i);
                     bot.sendMessage(fb::Message(response["result"]["errorMessage"], item.chatId));
                 }
+            }
+            else
+            {
+                bot.sendMessage(fb::Message("Unable to send request :(", item.chatId));
             }
         }
         response.clear();
@@ -69,7 +73,7 @@ void generateImage(String text, String chatId)
 
     if (prompts.prompt.isEmpty())
     {
-        Serial.println("ERR: Prompt is empty");
+        bot.sendMessage(fb::Message("Please provide a prompt.", chatId));
         return;
     }
 
@@ -138,8 +142,6 @@ void botUpdate(fb::Update &u)
     const String message = u.message().text().toString();
     const String chatId = u.message().chat().id();
 
-    Serial.println(message);
-
     if (!validateChat(chatId))
     {
         bot.sendMessage(fb::Message("This chat can not be used for this bot.", chatId));
@@ -162,16 +164,12 @@ void botUpdate(fb::Update &u)
  */
 void setup()
 {
-    Serial.begin(115200);
     WiFi.begin(SSID, PASS);
 
     while (WiFi.status() != WL_CONNECTED)
     {
-        Serial.print(".");
         delay(1000);
     }
-
-    Serial.println("Connected to: " + String(SSID));
 
     bot.setToken(botToken);
     bot.attachUpdate(botUpdate);

@@ -21,7 +21,6 @@ bool RequestSender::sendRequest(const String &endpoint, JsonDocument &response, 
 
     if (!http.begin(client, endpoint))
     {
-        Serial.println(String("ERROR: Failed to establish connection to " + endpoint));
         return false;
     }
 
@@ -51,7 +50,6 @@ bool RequestSender::sendRequest(const String &endpoint, JsonDocument &response, 
         }
     }
 
-    Serial.println(String("ERROR: Failed to send request. Error code: " + String(code)));
     return false;
 }
 
@@ -62,7 +60,6 @@ bool RequestSender::handleResponse(HTTPClient &http, JsonDocument &response)
     DeserializationError jsonError = deserializeJson(response, responseStr);
     if (jsonError)
     {
-        Serial.println(String("ERROR: Failed to parse JSON. Error message: " + String(jsonError.c_str())));
         closeConnection(http);
         return false;
     }
