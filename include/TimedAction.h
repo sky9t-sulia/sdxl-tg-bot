@@ -6,9 +6,10 @@
 /**
  * Class to perform an action after a specified interval.
  */
-class TimedAction {
+class TimedAction
+{
     unsigned long previousMillis; ///< The last time the action was performed.
-    const long interval; ///< The interval between each action.
+    const long interval;          ///< The interval between each action.
 
 public:
     /**
@@ -23,9 +24,11 @@ public:
      *
      * @return true if it's time to perform the action, false otherwise.
      */
-    bool isTime() {
+    bool isTime()
+    {
         unsigned long currentMillis = millis();
-        if (currentMillis - previousMillis >= interval) {
+        if (currentMillis - previousMillis >= interval)
+        {
             previousMillis = currentMillis;
             return true;
         }

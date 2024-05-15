@@ -1,7 +1,5 @@
 #include <Arduino.h>
 #include <WiFi.h>
-#include <HTTPClient.h>
-#include <WiFiClientSecure.h>
 #include <ArduinoJson.h>
 #include <FastBot2.h>
 #include "request/RequestQueue.h"
@@ -33,6 +31,7 @@ void checkQueue()
     {
         JsonDocument response;
         RequestQueueItem item = queue.getItem(i);
+
         if (!item.statusUrl.isEmpty())
         {
             if (sender.getRequest(item.statusUrl, response))
@@ -40,7 +39,8 @@ void checkQueue()
                 if (response["status"] == "COMPLETED")
                 {
                     queue.remove(i);
-                    fb::File file("sdxl.jpg", fb::File::Type::photo, response["result"]["output"][0]);
+                    String imageUrl = response["result"]["image_url"][0];
+                    fb::File file("sdxl.jpg", fb::File::Type::photo, imageUrl);
                     file.chatID = item.chatId;
                     bot.sendFile(file);
                 }
@@ -158,8 +158,8 @@ void botUpdate(fb::Update &u)
 }
 
 /*
-* Setup function
-*/
+ * Setup function
+ */
 void setup()
 {
     Serial.begin(115200);
@@ -179,8 +179,8 @@ void setup()
 }
 
 /*
-* Main loop
-*/
+ * Main loop
+ */
 void loop()
 {
     bot.tick();

@@ -49,6 +49,11 @@ bool RequestQueue::isEmpty() const
     return currentSize == 0;
 }
 
+RequestQueueItem &RequestQueue::getItem(int index)
+{
+    return items[index];
+}
+
 int RequestQueue::size() const
 {
     return currentSize;
