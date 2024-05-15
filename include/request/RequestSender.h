@@ -58,13 +58,6 @@ private:
      * @return true if the response was handled successfully, false otherwise.
      */
     bool handleResponse(HTTPClient &http, JsonDocument &response);
-
-    /**
-     * Close the connection.
-     *
-     * @param http The HTTPClient instance.
-     */
-    void closeConnection(HTTPClient &http);
 };
 
 #endif // REQUESTSENDER_H

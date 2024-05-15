@@ -55,10 +55,12 @@ bool RequestSender::sendRequest(const String &endpoint, JsonDocument &response, 
 
 bool RequestSender::handleResponse(HTTPClient &http, JsonDocument &response)
 {
-    // Get response
+    // Parse response
     String responseStr = http.getString();
     DeserializationError jsonError = deserializeJson(response, responseStr);
-    closeConnection(http);
+    
+    // Close connection
+    http.end();
 
     if (jsonError)
     {
@@ -66,9 +68,4 @@ bool RequestSender::handleResponse(HTTPClient &http, JsonDocument &response)
     }
 
     return true;
-}
-
-void RequestSender::closeConnection(HTTPClient &http)
-{
-    http.end();
 }
