@@ -58,13 +58,13 @@ bool RequestSender::handleResponse(HTTPClient &http, JsonDocument &response)
     // Get response
     String responseStr = http.getString();
     DeserializationError jsonError = deserializeJson(response, responseStr);
+    closeConnection(http);
+
     if (jsonError)
     {
-        closeConnection(http);
         return false;
     }
 
-    closeConnection(http);
     return true;
 }
 
